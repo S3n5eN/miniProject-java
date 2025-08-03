@@ -1,0 +1,70 @@
+package miniProject;
+import java.util.Scanner;
+import java.time.LocalTime;
+public class Task {
+    //Array untuk waktu tugas hari ini
+    private static LocalTime[] waktuToDoList = new LocalTime[100];
+    //Array tugas hari ini
+    private static String[] ToDoList = new String[100];
+    //Method untuk mengisi array yang menyimpan tugas hari ini
+    private static void isi(int index, String isi){
+        ToDoList[index] = isi;
+    }
+
+    //Method untuk mengisi array yang menyimpan waktu untuk tugas ToDoList
+    static private void isiWaktu(int index, LocalTime waktu){
+        waktuToDoList[index] = waktu;
+    }
+
+    //Method get untuk mendapatkan tugas saat ini;
+    static String getToDoList(int index){
+        return ToDoList[index];
+    }
+
+    //Method getWaktu untuk mendapatkan waktu mulai tugas
+    static LocalTime getWaktu(int index){
+        return waktuToDoList[index];
+    }
+
+    //Method get index untuk mendapatkan index dari tugas tertentu
+    static int getIndexToDoList(String elemen){
+         int index = 0;
+        for(int i=0; i<100;++i){
+            if(ToDoList[i] == elemen){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+
+    //Method set untuk memberikan tugas ke method isi
+    static void setToDoList(int index, String isi){
+        isi(index, isi);
+    }
+
+    //Method setWaktu untuk memberikan waktu tugas ke method isiWaktu
+    static void setWaktu(int index, LocalTime waktu){
+        isiWaktu(index, waktu);
+    }
+
+    //Method untuk memberi tahu tugas yang harus dilakukan saat ini
+    static String tugasSekarang(LocalTime waktu, int totalTugas){
+        String tugas = "Tidak ada tugas di waktu ini";
+    if(totalTugas == 1){
+        int i = 0;
+        if(waktu.equals(waktuToDoList[i])){
+            tugas = ToDoList[i];
+        }
+    }else{
+        for(int j=0;j<(totalTugas-1);++j){
+            if((waktu.isAfter(waktuToDoList[j])&& waktu.isBefore(waktuToDoList[j+1]))||(waktu.equals(waktuToDoList[j]))){
+                tugas = ToDoList[j];
+            }else if((waktu.equals(waktuToDoList[j+1]))||(waktu.isAfter(waktuToDoList[j+1]))){
+                tugas = ToDoList[j+1];
+            }
+        }
+    }
+        return tugas;
+    }
+}

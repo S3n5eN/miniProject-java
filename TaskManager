@@ -1,0 +1,233 @@
+package miniProject;
+import java.util.Scanner;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+public class TaskManager extends Task {
+    static int totalTugas;
+    public static void main(String[] args){
+        try{
+        Scanner input = new Scanner(System.in);
+        System.out.println("\r\n" + //
+                        "   _____ ______ _               __  __       _______   _____       _______       _   _  _____ \r\n" + //
+                        "  / ____|  ____| |        /\\   |  \\/  |   /\\|__   __| |  __ \\   /\\|__   __|/\\   | \\ | |/ ____|\r\n" + //
+                        " | (___ | |__  | |       /  \\  | \\  / |  /  \\  | |    | |  | | /  \\  | |  /  \\  |  \\| | |  __ \r\n" + //
+                        "  \\___ \\|  __| | |      / /\\ \\ | |\\/| | / /\\ \\ | |    | |  | |/ /\\ \\ | | / /\\ \\ | . ` | | |_ |\r\n" + //
+                        "  ____) | |____| |____ / ____ \\| |  | |/ ____ \\| |    | |__| / ____ \\| |/ ____ \\| |\\  | |__| |\r\n" + //
+                        " |_____/|______|______/_/    \\_\\_|  |_/_/    \\_\\_|    |_____/_/    \\_\\_/_/    \\_\\_| \\_|\\_____|\r\n" + //
+                        "                                                                                              \r\n" + //
+                        "                                                                                              \r\n" + //
+                        "");
+        String yes;
+        System.out.println("Siap mengawali harimu dengan membuat To Do List? ");
+        System.out.print("Ketik 'Yes' kalau kamu siapp ");
+        yes = input.nextLine();
+        if((yes.equals("Yes"))|| (yes.equals("yes"))){
+          awal();
+            
+        }else{
+            System.out.println("Yah kok enggak? :(");
+        }
+        
+    }catch(Exception e){
+        System.out.println("Ada kesalahan Tuan: "+e.getMessage());
+    }
+        
+    }
+
+    //Method awalan
+    static void awal(){
+        String pilihan;
+          pilihan = Menu();
+           switch (pilihan) {
+            case "1":
+                    buatToDoList();
+                break;
+            case "2":
+                cetakToDoList();
+                break;
+            case "3":
+                tambahTugas();
+                break;
+            case "4":
+                hapusTugas();
+                break;
+            case "5":
+                konfirmasiSelesai();
+                break;
+            case "6":
+                tugasSaatIni();
+                break;
+            default:
+                break;
+           }
+    }
+
+    //Method yang berisi pilihan menu
+    static String Menu(){
+        Scanner input = new Scanner(System.in);
+        String milih;
+        System.out.println("============================");
+        System.out.println("Menu aplikasi To Do List: ");
+        System.out.println(
+        "1. Buat To Do List\n2. Tampilkan To Do List\n3. Tambah tugas\n4. Kurangi tugas\n5. Konfirmasi tugas selesai\n6. Tugas saat ini\n7. Keluar");
+        System.out.println("============================");
+        System.out.println("Kalau kamu belum membuat To Do List, pilih 1");
+        System.out.println("Masukkan pilihan kamu: ");
+        System.out.print("-> ");
+        milih = input.nextLine();
+        return milih;
+    }
+
+    //Method apabila pilihan adalah 1
+    static void buatToDoList(){
+        Scanner input = new Scanner(System.in);
+        totalTugas = 0;
+        int banyakTugas, jamMulai, menitMulai;
+        String konfirmasi,tugas;
+        System.out.println("Ada berapa tugas kamu hari ini? ");
+        System.out.print("-> ");
+        banyakTugas = input.nextInt();
+        totalTugas = (totalTugas+banyakTugas);
+        input.nextLine();
+        System.out.println("Masukin tugas-tugasnya yuk");
+        for(int i = 0; i<totalTugas;++i){
+            System.out.print((i+1)+". ");
+            konfirmasi = input.nextLine();
+            tugas = konfirmasi.intern();
+            Task.setToDoList(i, tugas);
+            System.out.println("Kapan kamu akan memulainya? ");
+            System.out.print("Jam: ");
+            jamMulai = input.nextInt();
+            input.nextLine();
+            System.out.print("Menit: ");
+            menitMulai = input.nextInt();
+            input.nextLine();
+            LocalTime waktu = LocalTime.of(jamMulai, menitMulai);
+            Task.setWaktu(i, waktu);
+
+            
+        }
+        System.out.println("Kegiatan berhasil ditambahkan :)");
+        awal();//untuk kembali ke menu awal
+    }
+
+    //Method apabila pilihan adalah 2
+    static void cetakToDoList(){
+        int i = 0;
+        System.out.println("Tugasmu hari ini!!!");
+        while(i<(totalTugas)){
+            System.out.println((i+1)+". "+Task.getToDoList(i));
+            System.out.println("Waktu pengerjaan: "+getWaktu(i));
+            ++i;
+        }
+        System.out.println("Semangat untuk jadi pribadi yang produktif hari ini :)");
+        awal();//untuk kembali ke menu awal
+    }
+
+    //Method apabila pilihan adalah 3
+    static void tambahTugas(){
+        Scanner input = new Scanner(System.in);
+        int banyakTambah, jamMulai, menitMulai;
+        String konfirmasi,tambahanTugas;
+        System.out.println("Berapa banyak tugas yang mau kamu tambahkan?");
+        System.out.print("-> ");
+        banyakTambah = input.nextInt();
+        input.nextLine();
+        System.out.println("Masukin tambahan tugasnya ya");
+        for(int j = (totalTugas); j<(totalTugas+banyakTambah);++j){
+            System.out.print((j+1)+". ");
+            konfirmasi = input.nextLine();
+            tambahanTugas = konfirmasi.intern();
+            Task.setToDoList(j, tambahanTugas);
+            System.out.println("Masukin waktu pengerjaannya jangan lupa ya");
+            System.out.print("Jam: ");
+            jamMulai = input.nextInt();
+            input.nextLine();
+            System.out.print("Menit: ");
+            menitMulai = input.nextInt();
+            input.nextLine();
+            LocalTime waktu = LocalTime.of(jamMulai, menitMulai);
+            Task.setWaktu(j, waktu);
+        }
+        totalTugas = (totalTugas+banyakTambah);
+        System.out.println("Wah produktif sekali kamu");
+        awal();
+    }
+
+    //Method apabila pilihan adalah 4
+    static void hapusTugas(){
+        Scanner input = new Scanner(System.in);
+        int index;
+        String konfirmasi, tugasHapus, jawaban;
+        boolean lanjut;
+        do{
+            int i = 0;
+            System.out.println("================");
+        System.out.println("Tugas kamu hari ini:");
+        while(i < (totalTugas)){
+            System.out.print((i+1)+". ");
+            System.out.println(Task.getToDoList(i));
+            System.out.println("Waktu pengerjaan: "+Task.getWaktu(i));
+            ++i;
+        }
+        System.out.println("===============");
+        System.out.println("Kamu mau hapus tugas yang mana?");
+        System.out.print("-> ");
+        konfirmasi = input.nextLine();
+        tugasHapus = konfirmasi.intern();
+        index = Task.getIndexToDoList(tugasHapus);
+            for(int j=index;j<(totalTugas);++j){ //perulangan untuk 'menindih' dengan element setelahnya
+                Task.setToDoList(j,Task.getToDoList(j+1));
+                Task.setWaktu(j, Task.getWaktu(j+1));
+            }
+            --totalTugas;
+        System.out.println("Apa masih ada tugas yang ingin kamu hapus?");
+        System.out.print("->");
+        jawaban = input.nextLine();
+        if(jawaban.equals("Ya")){
+            lanjut = true;
+        }else{
+            lanjut = false;
+        }
+        }
+        while(lanjut == true);
+        awal();
+    }
+
+    //Method apabila pilihan adalah 5
+    static void konfirmasiSelesai(){
+        Scanner input = new Scanner(System.in);
+        String konfirmasi, selesai;
+        int indexSelesai;
+        System.out.println("wow kamu keren, sudah menyelesaikan tugas apani? ");
+        System.out.print("-> ");
+        konfirmasi = input.nextLine();
+        selesai = konfirmasi.intern();
+        indexSelesai = Task.getIndexToDoList(selesai);
+        for(int i=indexSelesai;i<totalTugas;++i){
+            Task.setToDoList(i, Task.getToDoList(i+1));
+            Task.setWaktu(i, Task.getWaktu(i+1));
+        }
+        --totalTugas;
+        System.out.println("================");
+        System.out.println("Sisa tugas yang belum dikerjakan: ");
+        for(int j=0;j<totalTugas;++j){
+            System.out.println((j+1)+". "+Task.getToDoList(j));
+            System.out.println("Waktu pengerjaan: "+Task.getWaktu(j));
+            
+        }
+        System.out.println("Semangat terus, jangan kendor!!!!");
+        awal();
+    }
+
+    //Method apabila pilihan adalah 6
+    static void tugasSaatIni(){
+        LocalTime saatIni = LocalTime.now();
+        DateTimeFormatter myFormat = DateTimeFormatter.ofPattern("HH:mm");
+        String waktuSekarang = saatIni.format(myFormat);
+        LocalTime waktu = LocalTime.parse(waktuSekarang,myFormat);
+        System.out.println("Waktu saat ini menunjukkan pukul: "+waktuSekarang);
+        System.out.println("Tugas yang harus kamu lakukan sekarang adalah: "+Task.tugasSekarang(waktu, totalTugas));
+        awal();
+    }
